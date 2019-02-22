@@ -1,5 +1,9 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Simple test of the ability of reactjs programming skills of our web developer candidates.
+1. Call open weather API for fetch differnet counrty name and get currnet weather shown on small different cards.
+2. Make one left-hand drawer that can navigate to weather shown page.
 
+
+# Project structure from 'Create Reactjs tool'
 ## Available Scripts
 
 In the project directory, you can run:
