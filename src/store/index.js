@@ -1,26 +1,21 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import ReduxPromise from 'redux-promise';
-import ReduxThunk from 'redux-thunk';
+import { createStore, applyMiddleware, compose } from "redux";
+import { combineEpics, createEpicMiddleware } from "redux-observable";
 
-import reducers from '../reducers';
+import reducers from "../reducers";
+import { epics } from "../actions";
 
-/**
- * Inject middle-ware to enhance redux store.
- */
-function enhancer() {
-  let middlewares = [ ReduxThunk, ReduxPromise ];
+const rootEpic = combineEpics(...Object.values(epics));
+const epicMiddleware = createEpicMiddleware();
 
-  // applyMiddleware function is provided by Redux
-  // The propose of the 
-  return compose(applyMiddleware(...middlewares));
-}
+/* eslint-disable no-underscore-dangle */
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+/* eslint-enable */
 
-/**
- * Define the global store to handle all application data
- * 
- * In redux app, there should be only one store in whole application.
-*/
-export default function generateStore(){
-  let store = createStore(reducers, enhancer());
+export default function generateStore() {
+  let store = createStore(
+    reducers,
+    composeEnhancers(applyMiddleware(epicMiddleware))
+  );
+  epicMiddleware.run(rootEpic);
   return store;
 }
